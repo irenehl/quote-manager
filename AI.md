@@ -1,6 +1,6 @@
 # Uso de AI
 
-Implementación asistida por Codex a partir del documento de reconstrucción. Reglas y precios explícitos; ningún modelo participa en el producto. La revisión debe concentrarse en cantidades, impuestos y límites del parser.
+Implementación asistida por Codex a partir del documento de reconstrucción. Reglas y precios explícitos; en el MVP inicial ningún modelo participaba en el producto. En una iteración posterior la usuaria aprobó lectura opcional de capturas con visión; el cálculo continúa siendo determinista.
 
 El adjunto describe un error del parser original: tomar «un evento» como cantidad y perder el match específico «hoja partida». Esta reconstrucción protege cantidad a la izquierda y prioridad de alias específicos con pruebas; ese incidente no se presenta como ocurrido durante esta sesión.
 
@@ -8,7 +8,11 @@ No se tuvo acceso a los docs originales ni al repo anterior. La dirección visua
 
 ## Herramientas y reparto
 
-Codex desktop, terminal para Next.js/TypeScript, edición por parches, pruebas `node:test` mediante tsx y navegador integrado para verificar la UI. Se leyó la skill instalada `frontend-design`; orientó la consola sobria, la tipografía editorial y los tonos de papel/verde. No se configuraron agentes, MCP externos ni instrucciones privadas del proyecto. No hubo subagentes ni llamadas LLM desde la aplicación.
+Codex desktop, terminal para Next.js/TypeScript, edición por parches, pruebas `node:test` mediante tsx y navegador integrado para verificar la UI. Se leyó la skill instalada `frontend-design`; orientó la consola sobria, la tipografía editorial y los tonos de papel/verde. No se configuraron agentes, MCP externos ni instrucciones privadas del proyecto. No hubo subagentes. La integración posterior de capturas se consultó con OpenAI Docs y documentación oficial; no se ejecutaron llamadas reales al modelo por falta de credencial.
+
+## Iteración de visión
+
+La usuaria preguntó por reconocer capturas y aprobó incorporarlo. `lib/vision.ts` contiene el prompt real y el contrato JSON. La imagen se trata como contenido no confiable, la lectura no tiene herramientas, y el resultado se valida antes de mostrarlo. El operador revisa la imagen y el texto antes de generar la cotización. Los tests del proveedor son simulados y no constituyen una evaluación de precisión visual.
 
 La mayor parte del código, CSS, pruebas y borradores de documentación la generó AI. La usuaria aportó el caso y la asignación, detuvo una implementación prematura, pidió revisar flujos/lógica/viabilidad y aprobó un alcance menor con entrega manual. No se atribuye a la usuaria una revisión línea por línea que no está registrada. Este reparto describe tareas observadas, no un porcentaje medido.
 

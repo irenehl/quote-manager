@@ -1,5 +1,9 @@
 # Registro de trabajo
 
+Iteración posterior: lectura opcional de capturas autorizada por la usuaria. Integración de Responses, entrada de imagen con vista previa, revisión obligatoria y cinco pruebas de contrato/errores. No se pudo medir OCR real al no existir una API key configurada. Esta iteración amplía el MVP y no se atribuye al timebox original.
+
+Verificación de esta iteración: 25 pruebas pasan y TypeScript correcto. Turbopack falló al abrir un puerto interno restringido por el sandbox; `npm run build -- --webpack` completó el build. En navegador se verificó la pestaña de captura, el aviso de credencial ausente y el bloqueo de preparar antes de leer/revisar. No se verificó el éxito visual contra el proveedor real.
+
 Iteración posterior de UX: se mantuvo la imprenta por decisión de la usuaria y se reemplazaron los tres campos de entrada por un único mensaje, con extracción conservadora de contacto y cuatro pruebas adicionales. Esta iteración es posterior al cierre original y no se incluye retroactivamente en su timebox.
 
 2026-09-14: lectura del adjunto e inspección del workspace vacío. Reconstrucción nueva; no se copió la cola Ya pagué / NorteMed. Registro de esta sesión, sin atribuir tiempos ni commits del proyecto original. Duración exacta no instrumentada.

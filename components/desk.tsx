@@ -20,6 +20,7 @@ import { formatPen, totals } from "@/lib/money";
 import { formatLimaTime } from "@/lib/dates";
 import { QuoteDocument } from "./quote-document";
 import { PriceList } from "./price-list";
+import { CaptureInput } from "./capture-input";
 const labels = {
   requiere_datos: "Faltan datos",
   por_revisar: "Por revisar",
@@ -41,6 +42,11 @@ function NewRequest({
 }) {
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
+  const [mode, setMode] = useState<"text" | "capture">("text");
+  const [message, setMessage] = useState("");
+  const [captureReady, setCaptureReady] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
+  const [warnings, setWarnings] = useState<string[]>([]);
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const element = dialog.current;
@@ -68,14 +74,15 @@ function NewRequest({
             <X size={20} />
           </button>
         </div>
-        <h2 id="new-title">Pega el pedido. Así de simple.</h2>
+        <h2 id="new-title">Del WhatsApp al pedido.</h2>
         <p>
-          Copia el mensaje completo de WhatsApp. Separaremos los productos,
-          cantidades y medidas para que los revises.
+          Pega el mensaje o lee una captura. Revisa lo que pidió el cliente;
+          nosotros hacemos las cuentas con tu lista de precios.
         </p>
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            if (mode === "capture" && (!captureReady || !reviewed)) return;
             const data = new FormData(e.currentTarget);
             start(async () => {
               const r = await act({
@@ -87,10 +94,66 @@ function NewRequest({
             });
           }}
         >
+          <div className="intake-tabs" aria-label="Forma de ingresar el pedido">
+            <button
+              type="button"
+              aria-pressed={mode === "text"}
+              onClick={() => setMode("text")}
+            >
+              Pegar texto
+            </button>
+            <button
+              type="button"
+              aria-pressed={mode === "capture"}
+              onClick={() => {
+                if (mode !== "capture") {
+                  setCaptureReady(false);
+                  setReviewed(false);
+                  setWarnings([]);
+                }
+                setMode("capture");
+              }}
+            >
+              Leer captura
+            </button>
+          </div>
+          {mode === "capture" && (
+            <CaptureInput
+              onReset={() => {
+                setCaptureReady(false);
+                setReviewed(false);
+                setWarnings([]);
+              }}
+              onRead={(r) => {
+                setMessage(r.message);
+                setWarnings(r.warnings);
+                setCaptureReady(true);
+                setReviewed(false);
+              }}
+            />
+          )}
+          {mode === "capture" && warnings.length > 0 && (
+            <div className="capture-notice">
+              <strong>Revisa estos detalles</strong>
+              <ul>
+                {warnings.map((w, i) => (
+                  <li key={i}>{w}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <label>
-            Mensaje de WhatsApp
+            {mode === "capture"
+              ? "Texto extraído · puedes corregirlo"
+              : "Mensaje de WhatsApp"}
             <textarea
               name="message"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                setReviewed(false);
+              }}
+              disabled={mode === "capture" && !captureReady}
               autoFocus
               required
               maxLength={5000}
@@ -100,6 +163,16 @@ function NewRequest({
               }
             />
           </label>
+          {mode === "capture" && captureReady && (
+            <label className="capture-review">
+              <input
+                type="checkbox"
+                checked={reviewed}
+                onChange={(e) => setReviewed(e.target.checked)}
+              />{" "}
+              Revisé el texto, las cantidades y las medidas contra la captura.
+            </label>
+          )}
           <p className="intake-note">
             Si el nombre o teléfono aparecen en el texto, los recuperamos. Si
             no, puedes preparar el pedido igualmente. Las fotos no se incluyen
@@ -110,7 +183,12 @@ function NewRequest({
               {error}
             </p>
           )}
-          <button className="primary full" disabled={pending}>
+          <button
+            className="primary full"
+            disabled={
+              pending || (mode === "capture" && (!captureReady || !reviewed))
+            }
+          >
             {pending ? "Preparando…" : "Preparar cotización"}
             <ArrowUpRight size={17} />
           </button>

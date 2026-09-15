@@ -6,6 +6,8 @@ Herramienta interna para Karla, operadora de una imprenta ficticia en Soyapango.
 
 Node 20.9 o superior. `npm install`, `npm test`, `npm run build`, `npm run start`. Desarrollo: `npm run dev`. Disponible en http://127.0.0.1:43123. `/health` reporta identidad y disponibilidad.
 
+En entornos que prohíben los puertos internos de Turbopack, usar `npm run build -- --webpack`. La última iteración se verificó con esa alternativa.
+
 ## Demo
 
 1. Seleccionar Rosa: 3 lonas de 2×1 m → 6 m² → $108.00 + $14.04 IVA = $122.04.
@@ -16,7 +18,7 @@ Node 20.9 o superior. `npm install`, `npm test`, `npm run build`, `npm run start
 
 ## Decisiones y arquitectura
 
-La entrada es un único mensaje: recupera nombre y teléfono cuando aparecen explícitamente (etiquetas, «me llamo» o encabezado de WhatsApp). Conserva el texto original y permite preparar sin identidad. No interpreta fotos ni identifica automáticamente a cada participante de una conversación larga.
+La entrada acepta texto o una captura. El texto recupera nombre y teléfono cuando aparecen explícitamente (etiquetas, «me llamo» o encabezado de WhatsApp). Permite preparar sin identidad. La captura genera un texto editable que debe compararse con la imagen; no se deducen características de una fotografía del producto.
 
 - Next.js App Router y server actions para mantener UI, validación y operaciones en un solo proyecto. React y CSS/Tailwind, con iconos Lucide y controles nativos. No se añadió shadcn ni un servicio externo para este alcance.
 - `lib/match.ts`: reglas de alias, cantidad a la izquierda, piezas × ancho × alto, millares y paquetes de 50. Repeticiones del mismo producto conservan líneas distintas. El parser prepara; Karla revisa siempre.
@@ -37,7 +39,20 @@ El navegador integrado permitió inspeccionar el documento y activar Imprimir, p
 
 Store en memoria de un único proceso; reiniciar restaura la semilla y pierde pedidos creados, cambios y finalizaciones. No es apto para despliegue con múltiples procesos ni operación real. Las pestañas no reciben cambios en tiempo real; el servidor comprueba la revisión al guardar/finalizar.
 
-No hay API de Meta, envío simulado, email, login, stock, historial de catálogo, pagos, CRM ni LLM. El pedido se pega manualmente y la cotización se entrega manualmente. No se genera PDF en servidor. El NIT es ficticio y la cotización no es crédito fiscal.
+No hay API de Meta, envío simulado, email, login, stock, historial de catálogo, pagos ni CRM. El texto se procesa con reglas; la lectura opcional de capturas usa un modelo con visión. La cotización se entrega manualmente. No se genera PDF en servidor. El NIT es ficticio y la cotización no es crédito fiscal.
+
+## Lectura opcional de capturas
+
+1. Crear `.env.local` usando `.env.example` y configurar `OPENAI_API_KEY` en el servidor. No pegar claves en la UI ni usar variables `NEXT_PUBLIC_`. Reiniciar el servidor.
+2. Nueva solicitud → Leer captura → seleccionar PNG/JPG/WebP de hasta 4 MB. La vista previa es local; seleccionar un archivo no lo envía al proveedor.
+3. “Leer captura” envía la imagen a OpenAI. Se solicita una lectura estructurada con `gpt-4.1-mini-2025-04-14`, configurable mediante `OPENAI_VISION_MODEL`. El modelo no recibe herramientas ni permisos para cotizar o modificar datos.
+4. Revisar/corregir el texto y advertencias contra la imagen, marcar la revisión y preparar el borrador. Los precios continúan saliendo únicamente del catálogo. La imagen se libera al cerrar el formulario; se conserva solo el texto aprobado como pedido.
+
+Implementado con [Responses e imágenes en base64](https://developers.openai.com/api/docs/guides/images-vision) y un [modelo con entrada de imagen y salida estructurada](https://developers.openai.com/api/docs/models/gpt-4.1-mini). `store: false` desactiva el almacenamiento de la respuesta para recuperación en la API; no es una promesa de retención cero por el proveedor. No se registran imagen, clave ni errores crudos del proveedor en logs de la app.
+
+La ruta es local (localhost/127.0.0.1), valida origen, firma y tamaño del archivo, limita a una lectura simultánea y espera hasta 35 segundos sin reintentos automáticos. No tiene autenticación ni un presupuesto persistente: antes de desplegarla hay que añadir ambos. La API puede generar cargos por cada lectura.
+
+Se probaron validaciones y respuestas del proveedor simuladas (éxito, formato inválido, rechazo, truncamiento, cuota y autorización). **No se hizo una lectura real: no había API key configurada.** Falta medir precisión, latencia y costo con capturas sintéticas antes de afirmar calidad del OCR. Una captura cortada, borrosa o con varios participantes puede producir omisiones o atribuciones incorrectas; la revisión humana sigue siendo obligatoria.
 
 El parser entiende patrones acotados, no lenguaje natural general: detecta algunas cláusulas adicionales desconocidas, pero puede omitir pedidos implícitos, negaciones o nombres ambiguos. Formatos no reconocidos requieren edición. «2,5» se interpreta como decimal; para miles usar `2000` o `2 mil`, no `2,000`. Medidas sin unidad se interpretan en metros; se admite `200x100 cm`. Una medida sin número de piezas asume una pieza y queda visible para revisión. No se infieren acabados, diseño, descuentos ni entrega. No afirmar que funciona con cualquier mensaje.
 
