@@ -42,36 +42,3 @@ El navegador integrado permitió inspeccionar el documento y activar Imprimir, p
 Store en memoria de un único proceso; reiniciar restaura la semilla y pierde pedidos creados, cambios y finalizaciones. No es apto para despliegue con múltiples procesos ni operación real. Las pestañas no reciben cambios en tiempo real; el servidor comprueba la revisión al guardar/finalizar.
 
 No hay API de Meta, envío simulado, email, login, stock, historial de catálogo, pagos ni CRM. El texto se procesa con reglas; la lectura opcional de capturas usa un modelo con visión. La cotización se entrega manualmente. No se genera PDF en servidor. El NIT es ficticio y la cotización no es crédito fiscal.
-
-## Lectura opcional de capturas
-
-1. Crear `.env.local` usando `.env.example` y configurar `OPENAI_API_KEY` en el servidor. No pegar claves en la UI ni usar variables `NEXT_PUBLIC_`. Reiniciar el servidor.
-2. Nueva solicitud → Leer captura → seleccionar PNG/JPG/WebP de hasta 4 MB. La vista previa es local; seleccionar un archivo no lo envía al proveedor.
-3. “Leer captura” envía la imagen a OpenAI. Se solicita una lectura estructurada con `gpt-4.1-mini-2025-04-14`, configurable mediante `OPENAI_VISION_MODEL`. El modelo no recibe herramientas ni permisos para cotizar o modificar datos.
-4. Revisar/corregir el texto y advertencias contra la imagen, marcar la revisión y preparar el borrador. Los precios continúan saliendo únicamente del catálogo. La imagen se libera al cerrar el formulario; se conserva solo el texto aprobado como pedido.
-
-Implementado con [Responses e imágenes en base64](https://developers.openai.com/api/docs/guides/images-vision) y un [modelo con entrada de imagen y salida estructurada](https://developers.openai.com/api/docs/models/gpt-4.1-mini). `store: false` desactiva el almacenamiento de la respuesta para recuperación en la API; no es una promesa de retención cero por el proveedor. No se registran imagen, clave ni errores crudos del proveedor en logs de la app.
-
-La ruta permite únicamente solicitudes del mismo origen desde `https://quote-manager-rosy.vercel.app` o localhost. Los dominios de preview y otros dominios se rechazan. Valida firma y tamaño del archivo, limita a una lectura simultánea por proceso y espera hasta 35 segundos sin reintentos automáticos. La lista de orígenes no autentica usuarios: la demo sigue sin login ni límite persistente de gasto. La API puede generar cargos por cada lectura.
-
-### Diagnóstico de capturas
-
-`GET /api/capture` indica si el proceso desplegado detecta la clave, sin mostrarla. En Vercel, configurar `OPENAI_API_KEY` en el entorno correspondiente y volver a desplegar. El estado del servidor local no refleja el de Vercel.
-
-Cada POST registra `capture.request` en los logs del servidor con referencia, estado HTTP, etapa, motivo y duración. Los errores muestran esa misma referencia en la interfaz para buscarla en los logs de Vercel. `origin_rejected` identifica un dominio/origen rechazado; `key_missing`, una clave ausente; `provider_authorization`, un rechazo del proveedor; `provider_rate_or_quota`, cuota o límite; `timeout`, tiempo agotado. No se registran claves, imágenes, texto del pedido ni errores crudos del proveedor.
-
-Para errores 429, `provider_insufficient_quota` indica cuota agotada y `provider_rate_limit` un límite temporal. Cuando OpenAI no especifica un código reconocido se conserva `provider_rate_or_quota` sin adivinar la causa. No se reintenta automáticamente.
-
-Se probaron validaciones y respuestas del proveedor simuladas (éxito, formato inválido, rechazo, truncamiento, cuota y autorización). **No se hizo una lectura real: no había API key configurada.** Falta medir precisión, latencia y costo con capturas sintéticas antes de afirmar calidad del OCR. Una captura cortada, borrosa o con varios participantes puede producir omisiones o atribuciones incorrectas; la revisión humana sigue siendo obligatoria.
-
-El parser entiende patrones acotados, no lenguaje natural general: detecta algunas cláusulas adicionales desconocidas, pero puede omitir pedidos implícitos, negaciones o nombres ambiguos. Formatos no reconocidos requieren edición. «2,5» se interpreta como decimal; para miles usar `2000` o `2 mil`, no `2,000`. Medidas sin unidad se interpretan en metros; se admite `200x100 cm`. Una medida sin número de piezas asume una pieza y queda visible para revisión. No se infieren acabados, diseño, descuentos ni entrega. No afirmar que funciona con cualquier mensaje.
-
-Reconstrucción desde el adjunto del usuario. Los documentos originales mencionados no estaban presentes; no se afirma haberlos leído ni haber visto inboxes de negocios reales.
-
-## Una semana más
-
-Validar con una operadora mensajes reales anonimizados y reglas de unidades/acabados; después persistencia con transacciones y copias de seguridad, autenticación y pruebas del flujo completo. Con ese núcleo validado, integrar recepción de WhatsApp y entrega de documentos con reintentos e idempotencia. No automatizar envíos antes de medir errores de interpretación.
-
-## Tiempo y procedencia
-
-Trabajo nuevo en este workspace. El primer commit es del 14 de septiembre de 2026 a las 18:31 (El Salvador); implementación funcional registrada a las 22:05 y verificación/cierre después. Son marcas de tiempo de pared, con conversación y pausas entre ellas, no horas continuas de trabajo. No hubo cronómetro desde el inicio: no se acredita un total exacto ni cumplimiento de cinco horas. Ver `TIMELOG.md` y `AI.md` para el registro y las correcciones de alcance.
