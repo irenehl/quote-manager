@@ -5,6 +5,7 @@ import {
   finalize,
   getStore,
   saveLines,
+  saveContact,
   updatePrice,
 } from "@/lib/store";
 import { Line } from "@/lib/types";
@@ -12,6 +13,7 @@ import { readMessage } from "@/lib/message-intake";
 type Command =
   | { type: "create"; message: string }
   | { type: "save"; id: string; lines: Line[]; revision: number }
+  | { type: "contact"; id: string; customer: string; phone: string; revision: number }
   | { type: "finalize"; id: string; revision: number }
   | { type: "price"; sku: string; priceCents: number };
 export async function act(command: Command) {
@@ -34,6 +36,9 @@ export async function act(command: Command) {
         break;
       case "finalize":
         finalize(store, command.id, command.revision);
+        break;
+      case "contact":
+        saveContact(store, command.id, command.customer, command.phone, command.revision);
         break;
       case "price":
         updatePrice(store, command.sku, command.priceCents);

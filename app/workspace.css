@@ -1,4 +1,9 @@
 /* Selected direction: A · Mesa de trabajo. Scoped app chrome; print layout retained. */
+.app-shell .contact-section { margin: 0 0 16px; }
+.app-shell .contact-editor { padding: 20px; background: white; border: 1px solid var(--line); border-radius: 6px; }
+.app-shell .contact-editor h3 { font-size: 18px; margin: 0; }
+.app-shell .contact-editor p { font-size: 14px; color: var(--muted); margin: 8px 0 16px; }
+.app-shell .contact-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px; }
 @font-face { font-family: "Source Workspace"; src: url('/fonts/source-sans-3-regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Source Workspace"; src: url('/fonts/source-sans-3-bold.ttf') format('truetype'); font-weight: 600 900; font-display: swap; }
 .app-shell {

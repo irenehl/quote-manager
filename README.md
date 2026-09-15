@@ -20,6 +20,8 @@ En entornos que prohíben los puertos internos de Turbopack, usar `npm run build
 
 La entrada acepta texto o una captura. El texto recupera nombre y teléfono cuando aparecen explícitamente (etiquetas, «me llamo» o encabezado de WhatsApp). Permite preparar sin identidad. La captura genera un texto editable que debe compararse con la imagen; no se deducen características de una fotografía del producto.
 
+En la revisión, «Editar cliente» permite corregir nombre y teléfono antes de finalizar. Ambos son opcionales y se reflejan en la bandeja y el documento al guardar. Las cotizaciones finalizadas conservan los datos aprobados.
+
 - Next.js App Router y server actions para mantener UI, validación y operaciones en un solo proyecto. React y CSS/Tailwind, con iconos Lucide y controles nativos. No se añadió shadcn ni un servicio externo para este alcance.
 - `lib/match.ts`: reglas de alias, cantidad a la izquierda, piezas × ancho × alto, millares y paquetes de 50. Repeticiones del mismo producto conservan líneas distintas. El parser prepara; Karla revisa siempre.
 - `lib/store.ts`: memoria compartida por el proceso, estados `requiere_datos`, `por_revisar`, `finalizada`. Cada actualización incrementa una revisión; las operaciones rechazan revisiones antiguas.

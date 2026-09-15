@@ -90,6 +90,27 @@ export function saveLines(
   q.revision++;
   return q;
 }
+export function saveContact(
+  store: Store,
+  id: string,
+  customer: string,
+  phone: string,
+  revision: number,
+) {
+  const q = findQuote(store, id);
+  if (q.status === "finalizada")
+    throw new Error("Esta cotización ya está finalizada.");
+  if (q.revision !== revision)
+    throw new Error("La solicitud cambió. Cancela y vuelve a editar el cliente para cargar los datos actuales.");
+  if (typeof customer !== "string" || customer.length > 100)
+    throw new Error("El nombre admite hasta 100 caracteres.");
+  if (typeof phone !== "string" || phone.length > 30)
+    throw new Error("El teléfono admite hasta 30 caracteres.");
+  q.customer = customer.trim() || "Cliente por identificar";
+  q.phone = phone.trim();
+  q.revision++;
+  return q;
+}
 export function finalize(store: Store, id: string, revision: number) {
   const q = findQuote(store, id);
   if (q.status === "finalizada") return q;

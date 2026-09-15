@@ -344,6 +344,41 @@ function LineEditor({
     </form>
   );
 }
+function ContactEditor({ quote, onClose }: { quote: Quote; onClose: () => void }) {
+  const [revision] = useState(quote.revision);
+  const [error, setError] = useState("");
+  const [pending, start] = useTransition();
+  return (
+    <form className="contact-editor" onSubmit={(event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      setError("");
+      start(async () => {
+        const result = await act({ type: "contact", id: quote.id, revision,
+          customer: String(data.get("customer") ?? ""), phone: String(data.get("phone") ?? "") });
+        if (result.ok) onClose();
+        else setError(result.error || "No se pudo guardar el cliente.");
+      });
+    }}>
+      <h3>Datos del cliente</h3>
+      <p>Ambos campos son opcionales. Aparecerán en el documento.</p>
+      <div className="contact-fields">
+        <label>Nombre del cliente
+          <input name="customer" autoComplete="name" maxLength={100} autoFocus
+            defaultValue={quote.customer === "Cliente por identificar" ? "" : quote.customer} disabled={pending} />
+        </label>
+        <label>Teléfono
+          <input name="phone" type="tel" autoComplete="tel" maxLength={30} defaultValue={quote.phone} disabled={pending} />
+        </label>
+      </div>
+      {error && <p className="error" role="alert">{error}</p>}
+      <div className="editor-actions">
+        <button type="button" className="secondary" disabled={pending} onClick={onClose}>Cancelar</button>
+        <button className="primary" disabled={pending}>{pending ? "Guardando…" : "Guardar cliente"}</button>
+      </div>
+    </form>
+  );
+}
 function Conversation({
   quote,
   catalog,
@@ -352,10 +387,19 @@ function Conversation({
   catalog: CatalogItem[];
 }) {
   const [editing, setEditing] = useState(false);
+  const [editingContact, setEditingContact] = useState(false);
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
   const isFinal = quote.status === "finalizada";
   return (
+    <>
+      {!isFinal && <div className="contact-section">
+        {editingContact ? <ContactEditor quote={quote} onClose={() => setEditingContact(false)} /> : (
+          <button className="text-button" onClick={() => setEditingContact(true)}>
+            <SlidersHorizontal size={16} /> Editar cliente
+          </button>
+        )}
+      </div>}
     <div className="review-workspace">
       <div className="conversation-scroll">
         <section className="original-order" aria-label="Mensaje original">
@@ -514,7 +558,7 @@ function Conversation({
             )}
             <button
               className="primary full"
-              disabled={pending || editing || quote.issues.length > 0}
+              disabled={pending || editing || editingContact || quote.issues.length > 0}
               onClick={() =>
                 start(async () => {
                   setError("");
@@ -534,6 +578,7 @@ function Conversation({
         )}
       </footer>
     </div>
+    </>
   );
 }
 export function Desk({
