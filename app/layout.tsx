@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./workspace.css";
 export const metadata: Metadata = {
   title: "LonaPunto · Cotizaciones",
   description: "Del pedido a una cotización lista para entregar.",

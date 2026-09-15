@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Inbox,
   CircleAlert,
+  Printer,
 } from "lucide-react";
 import { CatalogItem, Line, Quote } from "@/lib/types";
 import { act } from "@/app/actions";
@@ -355,10 +356,11 @@ function Conversation({
   const [pending, start] = useTransition();
   const isFinal = quote.status === "finalizada";
   return (
-    <>
+    <div className="review-workspace">
       <div className="conversation-scroll">
+        <section className="original-order" aria-label="Mensaje original">
         <div className="conversation-heading">
-          <span className="section-eyebrow">PEDIDO ORIGINAL</span>
+          <span className="section-eyebrow">LO QUE PIDIÓ EL CLIENTE</span>
           <span>{formatLimaTime(quote.createdAt)}</span>
         </div>
         <div className="message-source">
@@ -367,16 +369,15 @@ function Conversation({
           <span>WhatsApp</span>
         </div>
         <div className="customer-message">{quote.message}</div>
-        <div className="bot-message">
+        <div className="parser-note">
           <div className="bot-heading">
-            <span className="bot-icon">✳</span>
-            <strong>Bot de cotizaciones</strong>
-            <span className="auto-label">Mensaje automático</span>
+            {quote.issues.length ? <CircleAlert size={16} /> : <Check size={16} />}
+            <strong>{isFinal ? "Cotización revisada y finalizada" : quote.issues.length ? "Datos por completar" : "Borrador preparado · requiere revisión"}</strong>
           </div>
           <p>
-            {quote.issues.length
-              ? "El bot te pasa esta conversación. Hay datos por completar antes de preparar el documento."
-              : `Preparé ${quote.lines.length === 1 ? "un producto" : `${quote.lines.length} productos`} con la lista de precios. Revisa las cantidades y el pedido completo.`}
+            {isFinal ? "El documento conserva los productos y precios aprobados." : quote.issues.length
+              ? "Completa estos datos en los productos antes de finalizar."
+              : "Precios de tu catálogo. Confirma productos, cantidades y medidas contra el mensaje."}
           </p>
           {quote.issues.length > 0 && (
             <ul className="issues">
@@ -386,6 +387,7 @@ function Conversation({
             </ul>
           )}
         </div>
+        </section>
         {editing ? (
           <LineEditor
             quote={quote}
@@ -396,7 +398,7 @@ function Conversation({
           <section className="products-summary">
             <div className="summary-heading">
               <h3>
-                {isFinal ? "Productos cotizados" : "Productos identificados"}
+                {isFinal ? "Productos cotizados" : "Detalle del pedido"}
               </h3>
               {!isFinal && (
                 <button
@@ -420,6 +422,8 @@ function Conversation({
                         ? `${new Intl.NumberFormat("en-US").format(line.unit === "millar" ? line.quantity * 1000 : line.quantity)} ${line.unit === "millar" ? "unidades" : line.unit}`
                         : "Medidas o cantidad pendientes"}
                     </span>
+                    <small>{line.sku} · {formatPen(line.priceCents)} / {line.unit}</small>
+                    {line.width && line.height ? <small>{line.pieces} piezas × {line.width} m × {line.height} m</small> : null}
                   </div>
                   <b>
                     {line.quantity > 0
@@ -457,8 +461,13 @@ function Conversation({
         )}
       </div>
       <footer className="conversation-footer">
+        <h3>La cotización</h3>
         {isFinal ? (
           <>
+            <div className="review-totals">
+              <span>Subtotal {formatPen(totals(quote.lines).subtotal)} · IVA {formatPen(totals(quote.lines).tax)}</span>
+              <div><strong>Total USD</strong><b>{formatPen(totals(quote.lines).total)}</b></div>
+            </div>
             <span>
               <Check size={15} /> Cotización finalizada
             </span>
@@ -524,7 +533,7 @@ function Conversation({
           </>
         )}
       </footer>
-    </>
+    </div>
   );
 }
 export function Desk({
@@ -545,8 +554,7 @@ export function Desk({
     <div className="app-shell">
       <header className="app-header">
         <a className="brand" href="/">
-          lona<span>punto</span>
-          <i>.</i>
+          <span className="brand-mark"><Printer size={23} /></span>LonaPunto
         </a>
         <span className="header-divider" />
         <span className="workspace-name">Taller de impresión</span>
@@ -588,9 +596,9 @@ export function Desk({
                 MENOS CUENTAS. MÁS IMPRESIONES.
               </div>
               <h1>
-                Del pedido al papel<span>.</span>
+                Cotizaciones
               </h1>
-              <p>El bot prepara. Tú revisas y le das el visto bueno.</p>
+              <p>Del mensaje del cliente a una cotización revisada.</p>
             </div>
             <button className="primary" onClick={() => setNewOpen(true)}>
               <Plus size={17} /> Nueva solicitud
@@ -686,8 +694,8 @@ export function Desk({
               </header>
               <Conversation key={quote.id} quote={quote} catalog={catalog} />
             </section>
-            <section className="document-panel">
-              <div className="document-panel-heading">
+            <details className="document-panel">
+              <summary className="document-panel-heading">
                 <span>
                   <FileText size={15} /> VISTA DEL DOCUMENTO
                 </span>
@@ -699,7 +707,7 @@ export function Desk({
                 >
                   <ArrowUpRight size={18} />
                 </a>
-              </div>
+              </summary>
               <div className="document-preview">
                 <QuoteDocument quote={quote} />
               </div>
@@ -711,7 +719,7 @@ export function Desk({
                     : formatPen(totals(quote.lines).total)}
                 </span>
               </div>
-            </section>
+            </details>
           </main>
         </>
       )}

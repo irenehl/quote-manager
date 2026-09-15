@@ -20,4 +20,4 @@ Lexend en títulos + Source Sans 3 para datos, grafito #29292c, amarillo #f5c842
 
 Controles ≥44px, tipografía de cuerpo 16px, textos auxiliares ≥12px salvo etiquetas cortas; estados con texto además de color; foco visible, números tabulares, sin animación ornamental. A 375px se ordenan mensaje → detalle → total. El prototipo está identificado como tal; solicitudes adicionales no aparentan ser botones funcionales.
 
-La usuaria debe elegir dirección antes de sustituir la consola real. No implica adopción de shadcn ni cambios a lógica, visión o catálogo.
+La usuaria eligió A («la A»). Aplicada a la consola real mediante `app/workspace.css`: Source Sans 3, azul tinta, mensaje horizontal y productos junto al resumen. Documento en sección desplegable; bandeja/detalle separados en móvil. No implica adopción de shadcn ni cambios a lógica, visión o catálogo.

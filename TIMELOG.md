@@ -1,5 +1,7 @@
 # Registro de trabajo
 
+Adopción de A tras el prompt «la A»: aplicada a la consola, editor, entrada y catálogo. 25 pruebas pasan; build webpack correcto tras corregir una referencia TypeScript a `qtyMode` que no existe en Line. Navegador: edición de Rosa, pedido nuevo con medidas faltantes, resolución y finalización en móvil de 375 px sin desbordamiento. Demo nueva en 43125 para no reiniciar ni perder la memoria del proceso anterior. Duración exacta no instrumentada.
+
 Iteración posterior de diseño: a petición de la usuaria se aplicó UI/UX Pro Max a dos variantes interactivas aisladas en `/diseno`, sin reemplazar la consola. Build webpack correcto; revisión visual de ambas en escritorio y móvil de 375 px sin desbordamiento horizontal. Se verificaron cambios de medidas, total, documento y finalización local de muestra. Duración de foco no instrumentada; no se atribuye al timebox original.
 
 Iteración posterior: lectura opcional de capturas autorizada por la usuaria. Integración de Responses, entrada de imagen con vista previa, revisión obligatoria y cinco pruebas de contrato/errores. No se pudo medir OCR real al no existir una API key configurada. Esta iteración amplía el MVP y no se atribuye al timebox original.
