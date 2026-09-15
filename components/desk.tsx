@@ -370,7 +370,7 @@ function Conversation({
         </div>
         <div className="customer-message">{quote.message}</div>
         <div className="parser-note">
-          <div className="bot-heading">
+          <div className="parser-heading">
             {quote.issues.length ? <CircleAlert size={16} /> : <Check size={16} />}
             <strong>{isFinal ? "Cotización revisada y finalizada" : quote.issues.length ? "Datos por completar" : "Borrador preparado · requiere revisión"}</strong>
           </div>

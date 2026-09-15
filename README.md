@@ -1,4 +1,4 @@
-# Bot de cotizaciones · LonaPunto
+# Cotizador LonaPunto
 
 Herramienta interna para Karla, operadora de una imprenta ficticia en Soyapango. Convierte pedidos pegados desde WhatsApp en cotizaciones revisadas e imprimibles. Opción A del challenge AdoptAI: reducir interpretación y cálculo manual sin automatizar decisiones que necesitan contexto.
 

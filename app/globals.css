@@ -664,25 +664,6 @@ svg {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-.bot-message {
-  padding-bottom: 22px;
-  border-bottom: 1px dashed #dfe4d5;
-}
-.bot-heading {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.bot-icon {
-  font-size: 20px;
-  color: #687e48;
-  line-height: 1;
-}
-.bot-heading strong {
-  font-size: 10px;
-  font-weight: 650;
-}
 .auto-label {
   font-size: 7px;
   color: #8b9382;
@@ -690,12 +671,6 @@ svg {
   padding: 3px 5px;
   border-radius: 3px;
   margin-left: auto;
-}
-.bot-message > p {
-  font-size: 11px;
-  color: #808975;
-  line-height: 1.8;
-  margin-top: 11px;
 }
 .issues {
   padding-left: 16px;
@@ -1374,9 +1349,6 @@ svg {
   .customer-message {
     font-size: 13px;
   }
-  .bot-message > p {
-    font-size: 12px;
-  }
   .summary-line strong {
     font-size: 12px;
   }
@@ -1515,9 +1487,6 @@ svg {
   }
   .auto-label {
     font-size: 7px;
-  }
-  .bot-heading strong {
-    font-size: 10px;
   }
   .document-page {
     padding: 18px 10px;

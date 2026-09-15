@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { matchMessage } from "./match";
 import { catalogSeed } from "./catalog";
 import { inboxSeed } from "./inbox";
-import { botLineSummary } from "./quote";
+import { lineSummary } from "./quote";
 test("negative quantities and measurements require operator correction", () => {
   for (const message of ["-2 lonas 2x1", "1 lona -2x1", "1 lona 2x-1"])
     assert.ok(matchMessage(message, catalogSeed).issues.length);
@@ -39,7 +39,7 @@ test("quantity belongs to product, not a later event; specific alias is preserve
     catalogSeed,
   );
   assert.equal(r.lines[0].quantity, 3);
-  assert.equal(botLineSummary(r.lines), "3,000 volantes");
+  assert.equal(lineSummary(r.lines), "3,000 volantes");
 });
 test("repeated SKU keeps separate sizes", () => {
   const r = matchMessage("2 lonas 2x1 + 3 lonas 3x2", catalogSeed);

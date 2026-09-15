@@ -43,7 +43,7 @@ export function repriceLines(lines: Line[], catalog: CatalogItem[]): Line[] {
     return result;
   });
 }
-export function botLineSummary(lines: Line[]) {
+export function lineSummary(lines: Line[]) {
   return lines
     .map((l) => {
       const n = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
