@@ -844,6 +844,9 @@ svg {
   min-height: 540px;
   color: #383d35;
 }
+.document-page { background: #f6f7fa; }
+.print-bar .primary { background: #234adb; color: #f8faff; border-radius: 5px; }
+.print-bar .primary:hover { background: #1736ac; }
 .paper-top {
   display: flex;
   justify-content: space-between;
@@ -1024,6 +1027,28 @@ svg {
 .document-panel-foot > span:last-child {
   font-weight: 600;
 }
+/* Documento compartido por la consola y la ruta imprimible. */
+.paper {
+  background: #fbfcff;
+  border-color: #d6ddea;
+  color: #202633;
+  font-family: "Source Workspace", "Segoe UI", sans-serif;
+  box-shadow: 0 8px 24px #20263312;
+}
+.paper-brand { color: #202633; font-weight: 700; }
+.paper-brand span, .paper-brand i { color: #234adb; }
+.paper-kind, .shop-details, .paper-recipient small, .paper-recipient p, .quote-table th, .quote-table td small, .paper-bottom, .paper-bottom small { color: #596476; }
+.paper-kind b, .paper-recipient h3 { color: #202633; }
+.paper-rule { background: #234adb; }
+.quote-table th { border-color: #d6ddea; }
+.quote-table td { border-color: #e5e8ef; }
+.paper-totals > div { color: #596476; }
+.paper-totals .grand-total { border-color: #cbd3e1; color: #202633; }
+.grand-total strong { color: #234adb; }
+.paper-bottom { border-color: #d6ddea; }
+.paper-bottom strong { color: #202633; }
+.doc-status { color: #596476; background: #eef2ff; }
+.doc-status.is-final { color: #245d46; background: #eaf7ef; }
 .mobile-back {
   display: none;
 }

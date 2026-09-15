@@ -93,6 +93,22 @@
 .app-shell .document-panel-heading a { display: grid; place-items: center; width: 44px; height: 44px; }
 .app-shell .document-preview { max-width: 760px; margin: auto; padding: 24px; }
 .app-shell .document-panel-foot { font-size: 13px; color: var(--muted); }
+.app-shell .paper { background: #fbfcff; border-color: #d6ddea; color: #202633; box-shadow: 0 8px 24px #20263312; font-family: "Source Workspace", sans-serif; }
+.app-shell .paper-brand { color: #202633; font-weight: 700; letter-spacing: -1px; }
+.app-shell .paper-brand span { color: #234adb; }
+.app-shell .paper-brand i { color: #234adb; }
+.app-shell .paper-kind, .app-shell .shop-details, .app-shell .paper-recipient small, .app-shell .paper-recipient p, .app-shell .quote-table th, .app-shell .quote-table td small, .app-shell .paper-bottom, .app-shell .paper-bottom small { color: #596476; }
+.app-shell .paper-kind b, .app-shell .paper-recipient h3 { color: #202633; }
+.app-shell .paper-rule { background: #234adb; }
+.app-shell .quote-table th { border-color: #d6ddea; }
+.app-shell .quote-table td { border-color: #e5e8ef; }
+.app-shell .paper-totals > div { color: #596476; }
+.app-shell .paper-totals .grand-total { border-color: #cbd3e1; color: #202633; }
+.app-shell .grand-total strong { color: #234adb; }
+.app-shell .paper-bottom { border-color: #d6ddea; }
+.app-shell .paper-bottom strong { color: #202633; }
+.app-shell .doc-status { color: #596476; background: #eef2ff; }
+.app-shell .doc-status.is-final { color: #245d46; background: #eaf7ef; }
 .app-shell .catalog-page { max-width: 1100px; padding: 32px; margin: auto; }
 .app-shell .catalog-page > p, .app-shell .catalog-footnote { font-size: 15px !important; color: var(--muted); }
 .app-shell .catalog-caption, .app-shell .sku { font-size: 12px; color: var(--muted); }

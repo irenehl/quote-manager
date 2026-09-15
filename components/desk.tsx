@@ -694,7 +694,7 @@ export function Desk({
               </header>
               <Conversation key={quote.id} quote={quote} catalog={catalog} />
             </section>
-            <details className="document-panel">
+            <details className="document-panel" open>
               <summary className="document-panel-heading">
                 <span>
                   <FileText size={15} /> VISTA DEL DOCUMENTO
