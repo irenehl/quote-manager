@@ -50,7 +50,13 @@ No hay API de Meta, envío simulado, email, login, stock, historial de catálogo
 
 Implementado con [Responses e imágenes en base64](https://developers.openai.com/api/docs/guides/images-vision) y un [modelo con entrada de imagen y salida estructurada](https://developers.openai.com/api/docs/models/gpt-4.1-mini). `store: false` desactiva el almacenamiento de la respuesta para recuperación en la API; no es una promesa de retención cero por el proveedor. No se registran imagen, clave ni errores crudos del proveedor en logs de la app.
 
-La ruta es local (localhost/127.0.0.1), valida origen, firma y tamaño del archivo, limita a una lectura simultánea y espera hasta 35 segundos sin reintentos automáticos. No tiene autenticación ni un presupuesto persistente: antes de desplegarla hay que añadir ambos. La API puede generar cargos por cada lectura.
+La ruta permite únicamente solicitudes del mismo origen desde `https://quote-manager-rosy.vercel.app` o localhost. Los dominios de preview y otros dominios se rechazan. Valida firma y tamaño del archivo, limita a una lectura simultánea por proceso y espera hasta 35 segundos sin reintentos automáticos. La lista de orígenes no autentica usuarios: la demo sigue sin login ni límite persistente de gasto. La API puede generar cargos por cada lectura.
+
+### Diagnóstico de capturas
+
+`GET /api/capture` indica si el proceso desplegado detecta la clave, sin mostrarla. En Vercel, configurar `OPENAI_API_KEY` en el entorno correspondiente y volver a desplegar. El estado del servidor local no refleja el de Vercel.
+
+Cada POST registra `capture.request` en los logs del servidor con referencia, estado HTTP, etapa, motivo y duración. Los errores muestran esa misma referencia en la interfaz para buscarla en los logs de Vercel. `origin_rejected` identifica un dominio/origen rechazado; `key_missing`, una clave ausente; `provider_authorization`, un rechazo del proveedor; `provider_rate_or_quota`, cuota o límite; `timeout`, tiempo agotado. No se registran claves, imágenes, texto del pedido ni errores crudos del proveedor.
 
 Se probaron validaciones y respuestas del proveedor simuladas (éxito, formato inválido, rechazo, truncamiento, cuota y autorización). **No se hizo una lectura real: no había API key configurada.** Falta medir precisión, latencia y costo con capturas sintéticas antes de afirmar calidad del OCR. Una captura cortada, borrosa o con varios participantes puede producir omisiones o atribuciones incorrectas; la revisión humana sigue siendo obligatoria.
 

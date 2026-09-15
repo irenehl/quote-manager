@@ -4,6 +4,7 @@ export class VisionError extends Error {
   constructor(
     message: string,
     public status = 400,
+    public code = "invalid_capture_or_reading",
   ) {
     super(message);
   }
@@ -139,6 +140,11 @@ export async function readCapture(
           ? "No se pudo autorizar la lectura. Revisa la configuración del servidor."
           : "No se pudo leer la captura. Intenta de nuevo o pega el texto.",
       response.status === 429 ? 429 : 502,
+      response.status === 429
+        ? "provider_rate_or_quota"
+        : response.status === 401 || response.status === 403
+          ? "provider_authorization"
+          : "provider_error",
     );
   const body = await response.json();
   if (body.status !== "completed")

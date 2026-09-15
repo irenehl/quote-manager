@@ -68,7 +68,9 @@ export function CaptureInput({
       });
       const data = await response.json();
       if (!response.ok)
-        throw new Error(data.error || "No se pudo leer la captura.");
+        throw new Error(
+          `${data.error || "No se pudo leer la captura."}${data.requestId ? ` Referencia: ${data.requestId}` : ""}`,
+        );
       onRead(data);
       setRead(true);
     } catch (e) {
