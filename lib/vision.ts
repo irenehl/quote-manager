@@ -132,20 +132,50 @@ export async function readCapture(
       }),
     },
   );
-  if (!response.ok)
+  if (!response.ok) {
+    // Classify only known provider codes. Never expose the provider's raw message.
+    if (response.status === 429) {
+      const details = await response.json().catch(() => null);
+      const error = details?.error;
+      const billingErrors: Record<string, string> = {
+        credit_balance_exhausted: "OpenAI indica que se agotó el saldo de la cuenta de API. Revisa la facturación; puedes pegar el texto mientras tanto.",
+        organization_spend_limit_exceeded: "Se alcanzó el límite de gasto de la organización en OpenAI. Revisa los límites de la cuenta de API.",
+        project_spend_limit_exceeded: "Se alcanzó el límite de gasto del proyecto en OpenAI. Revisa los límites del proyecto asociado a la clave.",
+        organization_usage_limit_exceeded: "Se alcanzó el límite de uso de la organización en OpenAI. Revisa los límites de la cuenta de API.",
+      };
+      if (typeof error?.code === "string" && Object.hasOwn(billingErrors, error.code)) {
+        throw new VisionError(billingErrors[error.code], 429, `provider_${error.code}`);
+      }
+      if (error?.code === "insufficient_quota" || error?.type === "insufficient_quota") {
+        throw new VisionError(
+          "OpenAI indica que no hay cuota disponible. Revisa el saldo y los límites de la cuenta de API asociada a la clave. Puedes pegar el texto mientras tanto.",
+          429,
+          "provider_insufficient_quota",
+        );
+      }
+      if (error?.code === "rate_limit_exceeded" || error?.type === "rate_limit_exceeded" || error?.code === "slow_down" || error?.type === "rate_limit_error") {
+        throw new VisionError(
+          "Se alcanzó el límite temporal de lecturas de OpenAI. Espera un momento antes de volver a intentar.",
+          429,
+          "provider_rate_limit",
+        );
+      }
+      throw new VisionError(
+        "OpenAI rechazó la lectura por un límite de uso, sin indicar si es temporal o de cuota. Revisa los límites de la cuenta de API.",
+        429,
+        "provider_rate_or_quota",
+      );
+    }
     throw new VisionError(
-      response.status === 429
-        ? "El servicio está ocupado o sin cuota. Intenta más tarde o pega el texto."
-        : response.status === 401 || response.status === 403
+      response.status === 401 || response.status === 403
           ? "No se pudo autorizar la lectura. Revisa la configuración del servidor."
           : "No se pudo leer la captura. Intenta de nuevo o pega el texto.",
-      response.status === 429 ? 429 : 502,
-      response.status === 429
-        ? "provider_rate_or_quota"
-        : response.status === 401 || response.status === 403
+      502,
+      response.status === 401 || response.status === 403
           ? "provider_authorization"
           : "provider_error",
     );
+  }
   const body = await response.json();
   if (body.status !== "completed")
     throw new VisionError(

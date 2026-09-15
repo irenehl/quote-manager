@@ -6,8 +6,47 @@ import {
   parseReading,
   readCapture,
   readLimitedBody,
+  VisionError,
 } from "./vision";
 const png = Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10]);
+test("429 distinguishes exhausted quota from temporary rate limits without leaking provider messages", async () => {
+  for (const code of ["credit_balance_exhausted", "organization_spend_limit_exceeded", "project_spend_limit_exceeded", "organization_usage_limit_exceeded", "slow_down"]) {
+    await assert.rejects(() => readCapture(png, {
+      apiKey: "test",
+      fetcher: async () => Response.json({ error: { code } }, { status: 429 }),
+    }), (error: unknown) => {
+      assert.ok(error instanceof VisionError);
+      assert.equal(error.code, code === "slow_down" ? "provider_rate_limit" : `provider_${code}`);
+      return true;
+    });
+  }
+  for (const [providerCode, expectedCode] of [
+    ["insufficient_quota", "provider_insufficient_quota"],
+    ["rate_limit_exceeded", "provider_rate_limit"],
+    ["unknown_code", "provider_rate_or_quota"],
+  ]) {
+    for (const field of ["code", "type"]) {
+      let calls = 0;
+      await assert.rejects(
+        () => readCapture(png, {
+          apiKey: "test",
+          fetcher: async () => {
+            calls++;
+            return Response.json({ error: { [field]: providerCode, message: "private provider details" } }, { status: 429 });
+          },
+        }),
+        (error: unknown) => {
+          assert.ok(error instanceof VisionError);
+          assert.equal(error.code, expectedCode);
+          assert.equal(error.status, 429);
+          assert.ok(!error.message.includes("private provider details"));
+          return true;
+        },
+      );
+      assert.equal(calls, 1);
+    }
+  }
+});
 test("image signature and payload size are validated", async () => {
   assert.equal(imageMime(png), "image/png");
   assert.throws(() => imageMime(Buffer.from("<svg/>")));
