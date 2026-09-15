@@ -24,6 +24,8 @@ La mayor parte del código, CSS, pruebas y borradores de documentación la gener
 
 ## Errores reales y cómo se detectaron
 
+Exploración visual posterior: prompt real «usemso https://www.skills.sh/nextlevelbuilder/ui-ux-pro-max-skill/ui-ux-pro-max mejor». Se usó la skill instalada UI/UX Pro Max para comparar dos composiciones en `/diseno`, con tipografías locales Source Sans 3 y Lexend. Se descartó una primera recomendación automática de estética orgánica por no encajar con una herramienta de imprenta. Las decisiones están en `design-system/lonapunto/EXPLORATION.md`; la prueba usa datos de ejemplo y no guarda cotizaciones ni sustituye la UI principal.
+
 - El agente comenzó a implementar antes de validar el flujo. La usuaria lo detectó y pidió revisar el problema; el plan posterior eliminó funcionalidades que no mejoraban el recorrido principal.
 - El primer build encontró una etiqueta `h1` sin cerrar; se corrigió y el siguiente build pasó.
 - La revisión visual móvil mostró que, al ocultar el panel derecho, faltaba el total al momento de finalizar. Se añadió subtotal, IVA y total al pie de revisión, junto al acceso al borrador.

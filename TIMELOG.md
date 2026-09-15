@@ -1,5 +1,7 @@
 # Registro de trabajo
 
+Iteración posterior de diseño: a petición de la usuaria se aplicó UI/UX Pro Max a dos variantes interactivas aisladas en `/diseno`, sin reemplazar la consola. Build webpack correcto; revisión visual de ambas en escritorio y móvil de 375 px sin desbordamiento horizontal. Se verificaron cambios de medidas, total, documento y finalización local de muestra. Duración de foco no instrumentada; no se atribuye al timebox original.
+
 Iteración posterior: lectura opcional de capturas autorizada por la usuaria. Integración de Responses, entrada de imagen con vista previa, revisión obligatoria y cinco pruebas de contrato/errores. No se pudo medir OCR real al no existir una API key configurada. Esta iteración amplía el MVP y no se atribuye al timebox original.
 
 Verificación de esta iteración: 25 pruebas pasan y TypeScript correcto. Turbopack falló al abrir un puerto interno restringido por el sandbox; `npm run build -- --webpack` completó el build. En navegador se verificó la pestaña de captura, el aviso de credencial ausente y el bloqueo de preparar antes de leer/revisar. No se verificó el éxito visual contra el proveedor real.
