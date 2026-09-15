@@ -56,7 +56,7 @@ Se probaron validaciones y respuestas del proveedor simuladas (éxito, formato i
 
 El parser entiende patrones acotados, no lenguaje natural general: detecta algunas cláusulas adicionales desconocidas, pero puede omitir pedidos implícitos, negaciones o nombres ambiguos. Formatos no reconocidos requieren edición. «2,5» se interpreta como decimal; para miles usar `2000` o `2 mil`, no `2,000`. Medidas sin unidad se interpretan en metros; se admite `200x100 cm`. Una medida sin número de piezas asume una pieza y queda visible para revisión. No se infieren acabados, diseño, descuentos ni entrega. No afirmar que funciona con cualquier mensaje.
 
-Reconstrucción desde el adjunto del usuario. El repo Cursor y los documentos originales mencionados no estaban presentes; no se afirma haberlos leído ni haber visto inboxes de negocios reales. No existe remote GitHub configurado.
+Reconstrucción desde el adjunto del usuario. Los documentos originales mencionados no estaban presentes; no se afirma haberlos leído ni haber visto inboxes de negocios reales.
 
 ## Una semana más
 

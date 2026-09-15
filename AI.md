@@ -8,7 +8,7 @@ No se tuvo acceso a los docs originales ni al repo anterior. La dirección visua
 
 ## Herramientas y reparto
 
-Codex desktop, terminal para Next.js/TypeScript, edición por parches, pruebas `node:test` mediante tsx y navegador integrado para verificar la UI. Se leyó la skill instalada `frontend-design`; orientó la consola sobria, la tipografía editorial y los tonos de papel/verde. No se configuraron agentes, MCP externos ni instrucciones privadas del proyecto. No hubo subagentes. La integración posterior de capturas se consultó con OpenAI Docs y documentación oficial; no se ejecutaron llamadas reales al modelo por falta de credencial.
+Se usaron herramientas de desarrollo para Next.js/TypeScript, pruebas `node:test` mediante tsx y navegador integrado para verificar la UI. La interfaz final usa la skill UI/UX Pro Max; la lectura de capturas se contrastó con documentación oficial. No se ejecutaron llamadas reales al modelo por falta de credencial.
 
 ## Iteración de visión
 
