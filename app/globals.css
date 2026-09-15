@@ -1,4 +1,39 @@
 @import "tailwindcss";
+.modal::backdrop {
+  background: #20291e55;
+  backdrop-filter: blur(3px);
+}
+.modal:modal {
+  margin: auto;
+}
+.review-totals {
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e0e3db;
+}
+.review-totals > span {
+  display: block;
+  font-size: 10px;
+  color: #67765b;
+}
+.review-totals > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  color: #345e45;
+}
+.review-totals b {
+  font-size: 20px;
+}
+.review-totals a {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 10px;
+  margin-top: 8px;
+  color: #526d3d;
+}
 :root {
   --ink: #252b26;
   --muted: #7a8078;

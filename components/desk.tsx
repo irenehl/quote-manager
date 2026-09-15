@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import {
   Plus,
   ArrowUpRight,
@@ -41,6 +41,12 @@ function NewRequest({
 }) {
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const element = dialog.current;
+    element?.showModal();
+    return () => element?.close();
+  }, []);
   return (
     <div
       className="modal-backdrop"
@@ -49,7 +55,7 @@ function NewRequest({
       }}
     >
       <dialog
-        open
+        ref={dialog}
         className="modal"
         aria-labelledby="new-title"
         onKeyDown={(e) => {
@@ -398,6 +404,25 @@ function Conversation({
           </>
         ) : (
           <>
+            {quote.issues.length === 0 && (
+              <div className="review-totals">
+                <span>
+                  Subtotal {formatPen(totals(quote.lines).subtotal)} · IVA{" "}
+                  {formatPen(totals(quote.lines).tax)}
+                </span>
+                <div>
+                  <strong>Total USD</strong>
+                  <b>{formatPen(totals(quote.lines).total)}</b>
+                </div>
+                <a
+                  href={`/cotizacion/${quote.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Ver borrador del documento <ArrowUpRight size={13} />
+                </a>
+              </div>
+            )}
             <p>
               Revisa el pedido antes de finalizar.
               <br />

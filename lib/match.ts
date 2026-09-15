@@ -62,6 +62,11 @@ export function matchMessage(message: string, catalog: CatalogItem[]) {
     const count = before.match(
       /(?:^|\s)(\d+(?:\.\d+)?|un|una|dos|tres)\s*(mil(?:es|lares)?|millares)?\s*$/,
     );
+    if (
+      /-\s*\d+(?:\.\d+)?\s*$/.test(before) ||
+      /-\s*\d+(?:\.\d+)?\s*x|x\s*-/.test(local)
+    )
+      issues.push("Revisa las cantidades y medidas: no pueden ser negativas.");
     const words: Record<string, number> = { un: 1, una: 1, dos: 2, tres: 3 };
     const units = count
       ? (words[count[1]] ?? Number(count[1])) * (count[2] ? 1000 : 1)

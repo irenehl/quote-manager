@@ -4,6 +4,10 @@ import { matchMessage } from "./match";
 import { catalogSeed } from "./catalog";
 import { inboxSeed } from "./inbox";
 import { botLineSummary } from "./quote";
+test("negative quantities and measurements require operator correction", () => {
+  for (const message of ["-2 lonas 2x1", "1 lona -2x1", "1 lona 2x-1"])
+    assert.ok(matchMessage(message, catalogSeed).issues.length);
+});
 test("eight seed requests preserve intended quantities and handoff", () => {
   const results = inboxSeed.map(([, message]) =>
     matchMessage(message, catalogSeed),
