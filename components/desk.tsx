@@ -22,6 +22,7 @@ import { formatLimaTime } from "@/lib/dates";
 import { QuoteDocument } from "./quote-document";
 import { PriceList } from "./price-list";
 import { CaptureInput } from "./capture-input";
+import { whatsappLink } from "@/lib/whatsapp";
 const labels = {
   requiere_datos: "Faltan datos",
   por_revisar: "Por revisar",
@@ -391,6 +392,10 @@ function Conversation({
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
   const isFinal = quote.status === "finalizada";
+  const whatsappUrl = whatsappLink(
+    quote.phone,
+    `Hola${quote.customer === "Cliente por identificar" ? "" : `, ${quote.customer}`}. Te comparto la cotización ${quote.number} de LonaPunto. Total: ${formatPen(quote.snapshot?.totals.total ?? totals(quote.lines).total)} USD, IVA incluido.`,
+  );
   return (
     <>
       {!isFinal && <div className="contact-section">
@@ -516,7 +521,7 @@ function Conversation({
               <Check size={15} /> Cotización finalizada
             </span>
             <a
-              className="primary"
+              className="secondary full"
               href={`/cotizacion/${quote.id}`}
               target="_blank"
               rel="noreferrer"
@@ -524,6 +529,16 @@ function Conversation({
               Abrir documento
               <ArrowUpRight size={16} />
             </a>
+            {whatsappUrl ? (
+              <>
+                <a className="primary full whatsapp-action" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle size={18} /> Abrir WhatsApp
+                </a>
+                <p>Guarda el documento como PDF y adjúntalo en el chat. Tú confirmas el envío en WhatsApp.</p>
+              </>
+            ) : (
+              <p>No hay un teléfono válido para abrir WhatsApp. Puedes entregar el PDF manualmente.</p>
+            )}
           </>
         ) : (
           <>
@@ -551,6 +566,7 @@ function Conversation({
               <br />
               <span>El documento se entrega manualmente al cliente.</span>
             </p>
+            {!whatsappUrl && <p>Si quieres abrir el chat de WhatsApp después, agrega un teléfono válido en “Editar cliente”. Para números internacionales, incluye el código de país.</p>}
             {error && (
               <p className="error" role="alert">
                 {error}

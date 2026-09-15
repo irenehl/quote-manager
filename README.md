@@ -15,7 +15,7 @@ The operator interface and sample messages are in Spanish. Labels below match th
 1. Select Rosa: three 2×1 m banners → 6 m² → $108.00 + $14.04 VAT = $122.04.
 2. Create a request by pasting only `Necesito vinil para la vitrina` (I need vinyl for the shop window). If the text contains no customer identity, the request uses `Cliente por identificar` (unidentified customer). Finalization is blocked until the measurements are completed.
 3. Edit the order: 2 pieces, width 2 m, height 1 m. Save the review → 4 m² → $99.44 including VAT.
-4. Finalize and open the document. Print → Save as PDF, then deliver it to the customer manually.
+4. Finalize and open the document. Print → Save as PDF. `Abrir WhatsApp` (open WhatsApp) opens a `wa.me` link to the customer's number with a prepared message. Attach the PDF and confirm sending in WhatsApp. Neither attachment nor sending is automatic. Eight-digit Salvadoran numbers use country code 503; international numbers need their country code.
 5. Edit a price in `Lista de precios` (price list). Drafts update; finalized quotes retain their amounts. To demonstrate concurrent changes, leave Rosa open in one tab and change LONA-13 in another: the first attempt to finalize requires reviewing the updated total.
 
 ## Decisions and architecture

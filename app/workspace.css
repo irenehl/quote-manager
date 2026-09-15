@@ -1,4 +1,5 @@
 /* Selected direction: A · Mesa de trabajo. Scoped app chrome; print layout retained. */
+.app-shell .whatsapp-action { margin-top: 12px; }
 .app-shell .contact-section { margin: 0 0 16px; }
 .app-shell .contact-editor { padding: 20px; background: white; border: 1px solid var(--line); border-radius: 6px; }
 .app-shell .contact-editor h3 { font-size: 18px; margin: 0; }
