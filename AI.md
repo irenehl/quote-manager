@@ -1,34 +1,35 @@
-# Uso de AI
+# AI Usage
 
-Implementación asistida por Codex a partir del documento de reconstrucción. Reglas y precios explícitos; en el MVP inicial ningún modelo participaba en el producto. En una iteración posterior la usuaria aprobó lectura opcional de capturas con visión; el cálculo continúa siendo determinista.
+LonaPunto was built with assistance from Codex, using the supplied project brief and an approved implementation plan. AI generated most of the application code, styles, tests, and initial documentation. Irene supplied the business context, challenged the initial scope, reviewed the workflow and UI, and tested the deployed application. This describes the contributions observed during development; it is not a measured percentage or a claim of line-by-line human review.
 
-El adjunto describe un error del parser original: tomar «un evento» como cantidad y perder el match específico «hoja partida». Esta reconstrucción protege cantidad a la izquierda y prioridad de alias específicos con pruebas; ese incidente no se presenta como ocurrido durante esta sesión.
+## Tools and workflow
 
-No se tuvo acceso a los docs originales ni al repo anterior. La dirección visual es una interpretación nueva del patrón bandeja/hilo/documento autorizado en el adjunto.
+- Codex assisted with implementation, debugging, tests, and documentation.
+- UI/UX Pro Max informed the visual exploration. Irene selected option A, which was applied to the application. The comparison remains at `/diseno`; design decisions are recorded in [EXPLORATION.md](design-system/lonapunto/EXPLORATION.md).
+- Verification used `node:test` through tsx, TypeScript/build checks, and browser interaction tests. The screenshot integration was checked against official OpenAI documentation.
 
-## Herramientas y reparto
+## AI inside the product
 
-Se usaron herramientas de desarrollo para Next.js/TypeScript, pruebas `node:test` mediante tsx y navegador integrado para verificar la UI. La interfaz final usa la skill UI/UX Pro Max; la lectura de capturas se contrastó con documentación oficial. No se ejecutaron llamadas reales al modelo por falta de credencial.
+Text matching and quotation calculations are deterministic. Product prices come from the server-side catalog, and an operator reviews each quote before finalizing it.
 
-## Iteración de visión
+Optional screenshot reading uses an OpenAI vision model. The actual prompt and JSON schema are in [lib/vision.ts](lib/vision.ts). Screenshot content is treated as untrusted input. The model has no tools or permission to modify quotes, and its output is validated before being shown. The operator must review and may correct the extracted text before preparing the draft.
 
-La usuaria preguntó por reconocer capturas y aprobó incorporarlo. `lib/vision.ts` contiene el prompt real y el contrato JSON. La imagen se trata como contenido no confiable, la lectura no tiene herramientas, y el resultado se valida antes de mostrarlo. El operador revisa la imagen y el texto antes de generar la cotización. Los tests del proveedor son simulados y no constituyen una evaluación de precisión visual.
+Initial provider tests used simulated responses because no local API key was configured. Irene later tested the deployed integration and confirmed it worked after debugging deployment access and provider errors. That confirmation is not a systematic evaluation of extraction accuracy, latency, or cost. Automated provider tests remain simulated.
 
-La mayor parte del código, CSS, pruebas y borradores de documentación la generó AI. La usuaria aportó el caso y la asignación, detuvo una implementación prematura, pidió revisar flujos/lógica/viabilidad y aprobó un alcance menor con entrega manual. No se atribuye a la usuaria una revisión línea por línea que no está registrada. Este reparto describe tareas observadas, no un porcentaje medido.
+## Prompts that shaped the implementation
 
-## Prompts reales que cambiaron el trabajo
+The following are excerpts from actual requests. Spanish excerpts are translated into English for readability; they are not verbatim English prompts.
 
-1. «si algun flujo no te hace snetiod, puedes preguntar, no necesito que rehagas todo de golpe» seguido de «revisa flujos / logica / viabilidad». Frenó la construcción y llevó a revisar medidas faltantes, envíos y actualización de precios.
-2. «esta es la asignacion, crees que encaja para el puesto de forward deployed developer lo que estamos haciendo?» junto con el challenge. Cambió el criterio de éxito: un pedido nuevo que termina en un documento útil, con límites explicables.
-3. «PLEASE IMPLEMENT THIS PLAN» seguido del plan aprobado. Concretó estados, revisión humana, snapshot de la cotización y pruebas; sustituyó el envío simulado por finalización y entrega manual.
+1. “If a workflow doesn't make sense, you can ask. I don't need you to redo everything at once,” followed by “review workflows, logic, feasibility.” This paused implementation and prompted a review of missing measurements, delivery, and price updates.
+2. “This is the assignment. Do you think what we're doing fits the forward deployed developer role?” This focused the work on completing a new request through to a usable document with explicit limitations.
+3. “PLEASE IMPLEMENT THIS PLAN” (original English), followed by the approved plan. It specified review states, manual corrections, finalized snapshots, and verification, replacing simulated sending with manual document delivery.
+4. “Let's use UI/UX Pro Max instead,” followed by “A.” This led to a visual comparison and adoption of the selected design.
 
-## Errores reales y cómo se detectaron
+## Mistakes and corrections
 
-Exploración visual posterior: prompt real «usemso https://www.skills.sh/nextlevelbuilder/ui-ux-pro-max-skill/ui-ux-pro-max mejor». Se usó la skill instalada UI/UX Pro Max para comparar dos composiciones en `/diseno`, con tipografías locales Source Sans 3 y Lexend. Se descartó una primera recomendación automática de estética orgánica por no encajar con una herramienta de imprenta. Las decisiones están en `design-system/lonapunto/EXPLORATION.md`; la prueba usa datos de ejemplo y no guarda cotizaciones ni sustituye la UI principal.
+- Implementation started before the workflow had been validated. Irene caught this and requested a review; the revised plan narrowed the scope to the core quotation workflow.
+- Mobile review exposed a missing total when the document panel was hidden. Subtotal, tax, and total were added alongside the finalization action.
+- The deployed screenshot reader initially rejected non-local hosts. The approved deployment origin was explicitly allowed, while other origins remained blocked.
+- Provider errors initially combined temporary rate limits and exhausted quota into one message. Error handling now distinguishes known provider codes and logs a request reference without recording credentials, images, or extracted text.
 
-- El agente comenzó a implementar antes de validar el flujo. La usuaria lo detectó y pidió revisar el problema; el plan posterior eliminó funcionalidades que no mejoraban el recorrido principal.
-- El primer build encontró una etiqueta `h1` sin cerrar; se corrigió y el siguiente build pasó.
-- La revisión visual móvil mostró que, al ocultar el panel derecho, faltaba el total al momento de finalizar. Se añadió subtotal, IVA y total al pie de revisión, junto al acceso al borrador.
-- La prueba manual con dos pestañas confirmó que cambiar un precio obliga a revisar nuevamente antes de finalizar.
-
-El error «un evento» del documento de contexto se protege con una prueba de regresión, pero no se presenta como un fallo ocurrido en esta implementación.
+The supplied brief also described an earlier parser issue involving “un evento” and the alias “hoja partida.” Regression tests cover it, but it is not claimed as an incident observed in this implementation.
