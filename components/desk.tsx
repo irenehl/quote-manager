@@ -68,10 +68,10 @@ function NewRequest({
             <X size={20} />
           </button>
         </div>
-        <h2 id="new-title">Nueva solicitud</h2>
+        <h2 id="new-title">Pega el pedido. Así de simple.</h2>
         <p>
-          Pega el pedido que recibiste por WhatsApp. Prepararemos un borrador
-          para que lo revises.
+          Copia el mensaje completo de WhatsApp. Separaremos los productos,
+          cantidades y medidas para que los revises.
         </p>
         <form
           onSubmit={(e) => {
@@ -80,8 +80,6 @@ function NewRequest({
             start(async () => {
               const r = await act({
                 type: "create",
-                customer: String(data.get("customer")),
-                phone: String(data.get("phone")),
                 message: String(data.get("message")),
               });
               if (r.ok && r.id) onCreated(r.id);
@@ -90,29 +88,23 @@ function NewRequest({
           }}
         >
           <label>
-            Nombre del cliente
-            <input
-              name="customer"
-              autoFocus
-              required
-              maxLength={100}
-              placeholder="Ej. Ana López"
-            />
-          </label>
-          <label>
-            Teléfono <span className="muted">(opcional)</span>
-            <input name="phone" maxLength={30} placeholder="+503" type="tel" />
-          </label>
-          <label>
-            Mensaje del pedido
+            Mensaje de WhatsApp
             <textarea
               name="message"
+              autoFocus
               required
               maxLength={5000}
-              rows={5}
-              placeholder="Hola, necesito 3 lonas de 2x1 metros…"
+              rows={8}
+              placeholder={
+                "Hola, me llamo Ana López. Necesito 3 lonas de 2x1 metros para mi negocio. Mi teléfono es +503 7000-1234."
+              }
             />
           </label>
+          <p className="intake-note">
+            Si el nombre o teléfono aparecen en el texto, los recuperamos. Si
+            no, puedes preparar el pedido igualmente. Las fotos no se incluyen
+            al copiar texto.
+          </p>
           {error && (
             <p className="error" role="alert">
               {error}

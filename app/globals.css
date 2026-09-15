@@ -1,4 +1,10 @@
 @import "tailwindcss";
+.intake-note {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #67765b;
+  margin: 0 0 18px;
+}
 .modal::backdrop {
   background: #20291e55;
   backdrop-filter: blur(3px);

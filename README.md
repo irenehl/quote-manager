@@ -9,12 +9,14 @@ Node 20.9 o superior. `npm install`, `npm test`, `npm run build`, `npm run start
 ## Demo
 
 1. Seleccionar Rosa: 3 lonas de 2×1 m → 6 m² → $108.00 + $14.04 IVA = $122.04.
-2. Crear una solicitud con nombre y mensaje «Necesito vinil para la vitrina». Finalizar queda bloqueado hasta resolver medidas.
+2. Crear una solicitud pegando únicamente «Necesito vinil para la vitrina». El contacto queda como «Cliente por identificar» si no aparece en el texto. Finalizar queda bloqueado hasta resolver medidas.
 3. Editar: 2 piezas, ancho 2 m y alto 1 m. Guardar revisión → 4 m² → $99.44 con IVA.
 4. Finalizar y abrir el documento. Imprimir → Guardar como PDF; entregar manualmente al cliente.
 5. Editar un precio en Lista de precios. Los borradores cambian, las finalizadas conservan sus importes. Para demostrar concurrencia, dejar Rosa abierta en una pestaña y cambiar LONA-13 en otra: el primer intento de finalizar exige revisar el nuevo total.
 
 ## Decisiones y arquitectura
+
+La entrada es un único mensaje: recupera nombre y teléfono cuando aparecen explícitamente (etiquetas, «me llamo» o encabezado de WhatsApp). Conserva el texto original y permite preparar sin identidad. No interpreta fotos ni identifica automáticamente a cada participante de una conversación larga.
 
 - Next.js App Router y server actions para mantener UI, validación y operaciones en un solo proyecto. React y CSS/Tailwind, con iconos Lucide y controles nativos. No se añadió shadcn ni un servicio externo para este alcance.
 - `lib/match.ts`: reglas de alias, cantidad a la izquierda, piezas × ancho × alto, millares y paquetes de 50. Repeticiones del mismo producto conservan líneas distintas. El parser prepara; Karla revisa siempre.

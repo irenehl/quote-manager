@@ -1,5 +1,7 @@
 # Registro de trabajo
 
+Iteración posterior de UX: se mantuvo la imprenta por decisión de la usuaria y se reemplazaron los tres campos de entrada por un único mensaje, con extracción conservadora de contacto y cuatro pruebas adicionales. Esta iteración es posterior al cierre original y no se incluye retroactivamente en su timebox.
+
 2026-09-14: lectura del adjunto e inspección del workspace vacío. Reconstrucción nueva; no se copió la cola Ya pagué / NorteMed. Registro de esta sesión, sin atribuir tiempos ni commits del proyecto original. Duración exacta no instrumentada.
 
 Marcas de tiempo verificables, zona America/El_Salvador:

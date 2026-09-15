@@ -8,8 +8,9 @@ import {
   updatePrice,
 } from "@/lib/store";
 import { Line } from "@/lib/types";
+import { readMessage } from "@/lib/message-intake";
 type Command =
-  | { type: "create"; customer: string; phone: string; message: string }
+  | { type: "create"; message: string }
   | { type: "save"; id: string; lines: Line[]; revision: number }
   | { type: "finalize"; id: string; revision: number }
   | { type: "price"; sku: string; priceCents: number };
@@ -19,12 +20,14 @@ export async function act(command: Command) {
     let id: string | undefined;
     switch (command.type) {
       case "create":
+        const intake = readMessage(command.message);
         id = createQuote(
           store,
-          command.customer,
-          command.phone,
-          command.message,
+          intake.customer,
+          intake.phone,
+          intake.message,
         ).id;
+        store.quotes.find((q) => q.id === id)!.message = intake.original;
         break;
       case "save":
         saveLines(store, command.id, command.lines, command.revision);
