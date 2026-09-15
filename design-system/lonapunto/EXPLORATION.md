@@ -1,23 +1,23 @@
-# Revisión visual con UI/UX Pro Max
+# Visual Exploration with UI/UX Pro Max
 
-Pantalla aislada `/diseno`, dos variantes con el mismo pedido de Rosa. No guarda cambios en el store de producción. La operadora puede editar piezas/ancho/alto, ver el cálculo y probar finalización local.
+The isolated `/diseno` page compares two variants using Rosa's sample order. It does not save changes to the application's store. The operator can edit pieces, width, and height, see the calculation, and try finalization within the prototype.
 
-## Fuente y criterio
+## Sources and rationale
 
-Skill `ui-ux-pro-max` instalada localmente, elegida por la usuaria. Consultas: design-system para print quotation workspace y operations dashboard; typography industrial professional readable; UX animation/accessibility/loading; stack Next.js forms.
+Irene selected the locally installed `ui-ux-pro-max` skill. Searches covered design systems for a print quotation workspace and operations dashboard, industrial and readable professional typography, animation/accessibility/loading guidelines, and Next.js forms.
 
-La primera recomendación (biophilic + landing) no correspondía al producto y se descartó. De la segunda se retuvieron jerarquía de datos, resaltado legible y edición visible; se descartaron hero, métricas y gráficos no pedidos. La combinación Lexend / Source Sans 3 proviene de Corporate Trust, priorizando lectura. Fuentes alojadas localmente, licencias OFL en public/fonts.
+The first recommendation, a biophilic landing-page design, did not fit the product and was discarded. The second contributed data hierarchy, readable highlighting, and visible editing controls; unnecessary hero sections, metrics, and charts were excluded. The Lexend / Source Sans 3 pairing came from the Corporate Trust recommendation, with readability as the priority. Fonts are self-hosted, with OFL licenses in `public/fonts`.
 
-## A · Mesa de trabajo
+## A · Workspace
 
-Source Sans 3 16px, tinta #202633, secundario #596476, acción #234adb. Barra lateral de solicitudes, mensaje horizontal, detalle y total en paralelo. Lectura compacta y controles visibles. Superficies claras para operación diurna de taller.
+Source Sans 3 at 16 px, ink #202633, secondary text #596476, and actions #234adb. A request sidebar, a full-width message, and order details alongside the total. Compact reading and visible controls, with light surfaces for daytime work in the print shop.
 
-## B · Orden de taller
+## B · Workshop Order
 
-Lexend en títulos + Source Sans 3 para datos, grafito #29292c, amarillo #f5c842 con texto oscuro. Mensaje a la izquierda, medidas grandes y cierre debajo del detalle. Identidad más marcada, sin burbujas de bot ni hero.
+Lexend headings and Source Sans 3 for data, graphite #29292c, and yellow #f5c842 with dark text. The message sits on the left, measurements are prominent, and finalization appears below the details. A stronger visual identity, without bot conversation bubbles or a hero section.
 
-## Invariantes
+## Shared requirements
 
-Controles ≥44px, tipografía de cuerpo 16px, textos auxiliares ≥12px salvo etiquetas cortas; estados con texto además de color; foco visible, números tabulares, sin animación ornamental. A 375px se ordenan mensaje → detalle → total. El prototipo está identificado como tal; solicitudes adicionales no aparentan ser botones funcionales.
+Controls at least 44 px tall, 16 px body text, and supporting text at least 12 px except for short labels. Status uses text as well as color; focus is visible, numbers are tabular, and there is no decorative animation. At 375 px, the order is message → details → total. The prototype is labeled as such; additional sample requests do not appear to be functional buttons.
 
-La usuaria eligió A («la A»). Aplicada a la consola real mediante `app/workspace.css`: Source Sans 3, azul tinta, mensaje horizontal y productos junto al resumen. Documento en sección desplegable; bandeja/detalle separados en móvil. No implica adopción de shadcn ni cambios a lógica, visión o catálogo.
+Irene chose A. It was applied to the application through `app/workspace.css`: Source Sans 3, ink blue, a full-width message, and products alongside the summary. The document preview is in an expandable section, open by default; inbox and detail navigation are separate on mobile. This design change did not introduce shadcn or alter quotation logic, vision, or the catalog.

@@ -1,11 +1,11 @@
-# Registro de trabajo
+# Work Log
 
-Este registro resume hitos verificables. No se midieron horas de foco de forma continua, por lo que no se afirma cumplimiento de un timebox.
+This log summarizes verifiable milestones. Focused working time was not tracked continuously, so compliance with the assignment's timebox is not claimed.
 
-- 2026-09-14 18:31 (America/El_Salvador): documentación inicial y alcance.
-- 2026-09-14 22:05: lógica de cotización, revisión humana, documento imprimible y pruebas iniciales.
-- Después del cierre inicial: lectura opcional de capturas con revisión obligatoria, entrada desde un solo mensaje y validaciones adicionales.
-- Después del cierre inicial: dirección visual A aplicada a la consola, editor, entrada y catálogo; comprobación en escritorio y móvil de 375 px.
-- Verificación final: 25 pruebas pasan, build webpack correcto, pedido nuevo con datos faltantes resuelto y cotización finalizada sin desbordamiento horizontal en móvil.
+- 2026-09-14 18:31 (America/El_Salvador): initial documentation and scope.
+- 2026-09-14 22:05: quotation logic, human review, printable document, and initial tests.
+- Subsequent iteration: optional screenshot reading with mandatory review, single-message intake, and additional validation.
+- Subsequent iteration: visual direction A applied to the workspace, editor, intake, and catalog; checked on desktop and at a mobile width of 375 px.
+- Verification at that stage: 25 passing tests and a successful webpack build. A new request with missing information was completed and finalized without horizontal overflow on mobile.
 
-El store es en memoria y la demo local se reinicia con el proceso; no se generó un PDF de archivo durante la verificación, solo se comprobó el documento HTML y la acción de impresión.
+The store is in memory, and the local demo resets when its process restarts. No PDF file was generated during verification; checks covered the HTML document and the print action.
